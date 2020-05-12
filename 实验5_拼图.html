@@ -1,7 +1,7 @@
 <!--
  * @Author: chingkingm
  * @Date: 2020-05-07 09:17:08
- * @LastEditTime: 2020-05-12 21:47:08
+ * @LastEditTime: 2020-05-12 22:28:23
  * @FilePath: \多媒体教育与娱乐f:\Lessens\2020春网课\移动互联网应用开发 实验\实验5\拼图\实验5_拼图.html
  * @Description: 
  -->
@@ -51,9 +51,10 @@
         #res {
             width: 100px;
             height: 50px;
+            border: 0px;
             background-color: firebrick;
             position: absolute;
-            left: 400px;
+            left: 450px;
             color: white;
         }
         #select_img {
@@ -70,9 +71,17 @@
             width: 131px;
             height: 50px;
             line-height: 25px;
-            margin-left: 72px;
-            /* border: 1px solid black; */
+            margin-left: 234px;
             background-color: firebrick;
+            color: white;
+        }
+        #changeImg{
+            width: 100px;
+            height: 50px;
+            border: 0px;
+            background-color: firebrick;
+            position: absolute;
+            left: 50px;
             color: white;
         }
     </style>
@@ -92,6 +101,7 @@
         </div>
         <div id="div_btn">
             <button id="res" onclick="reStart()">重新开始</button>
+            <button id="changeImg" onclick="changeImg()">随机换图</button>
             <input type="file" name="select_img" id="select_img" accept="image/jpeg,image/png" onchange="up()">
             <label for="select_img" id="label_img">
                     点击使用本地图片
@@ -104,29 +114,47 @@
         var jian = screen_width / 1904 * 660;
         var screen_height = document.body.clientHeight;
         var num_s = [00, 01, 02, 10, 11, 12, 20, 21, 22];
-        var flag_merge = 0;
+        var flag_merge = 0;//标记随机序列是否为偶序列
         var whitei = 0;
         var x = [3, 202, 401];
         var y = [3, 202, 401];
-        var begin = 0;
+        var begin = 0;//标记游戏开始
+        var server = 1;//标记是否使用服务器端图片
         var msec = 0, sec = 0, min = 0, hour = 0;
         function pintu() {
             t = setInterval(clock, 50);
             num = randNum(num_s);
-            img_src = Math.floor(Math.random() * 4 + 1);
-            console.log("图片序号"+img_src);
-            img_src = "https://www.chingkingm.cn/wp-content/uploads/2020/05/" + img_src + ".png";
+            if(server){
+                img_src = Math.floor(Math.random() * 4 + 1);
+                console.log("图片序号" + img_src);
+                img_src = "https://www.chingkingm.cn/wp-content/uploads/2020/05/" + img_src + ".png";
+            }
             var s1 = document.getElementById("s1");
             var s2 = document.getElementById("s2");
             s1.innerHTML = "00";
             s2.innerHTML = "00";
-            // img0 = document.createElement("img");
-            // img0.src = img_src;
-            let up = document.getElementById("select_img").files[0];
             drawimg();
         }
         function up(){
-            
+            server = 0;
+            let f = document.getElementById("select_img").files[0];
+            console.log(f);
+            let reader = new FileReader();
+            reader.readAsDataURL(f);
+            reader.onload = function () {
+                begin = 0;
+                clearInterval(t);
+                msec = 0, sec = 0, min = 0, hour = 0;
+                img_src = reader.result;
+                pintu();
+            }
+        }
+        function changeImg(){
+            server = 1;
+            clearInterval(t);
+            begin = 0;
+            msec = 0, sec = 0, min = 0, hour = 0;
+            pintu();
         }
         function clock() {
             if (begin) {
@@ -187,6 +215,7 @@
             begin = 1;
             var xc = ev.clientX - 8;
             var yc = ev.clientY - 160;
+            console.log(xc);
             xc = judgeNo(xc);
             yc = judgeNo(yc);
             cl = xc + yc * 3;
@@ -284,7 +313,7 @@
         }
         function reStart() {
             // location.reload(true);
-            
+            server = 0;
             clearInterval(t);
             begin = 0;
             msec = 0, sec = 0, min = 0, hour = 0;
