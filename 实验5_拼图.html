@@ -1,8 +1,8 @@
 <!--
  * @Author: chingkingm
  * @Date: 2020-05-07 09:17:08
- * @LastEditTime: 2020-05-10 15:30:38
- * @FilePath: \多媒体教育与娱乐f:\Lessens\2020春网课\移动互联网应用开发 实验\实验5\实验5_拼图.html
+ * @LastEditTime: 2020-05-12 19:08:27
+ * @FilePath: \多媒体教育与娱乐f:\Lessens\2020春网课\移动互联网应用开发 实验\实验5\拼图\实验5_拼图.html
  * @Description: 
  -->
 <!DOCTYPE html>
@@ -81,6 +81,9 @@
         var num_s = [00, 01, 02, 10, 11, 12, 20, 21, 22];
         var num = num_s;
         num = randNum(num);
+        var img_src = Math.floor(Math.random() * 4+1);
+        console.log(img_src);
+        img_src = "https://www.chingkingm.cn/wp-content/uploads/2020/05/" + img_src + ".png";
         var flag_merge = 0;
         var whitei = 0;
         var x = [3, 202, 401];
@@ -124,7 +127,7 @@
         }
         function drawimg() {
             var img0 = new Image(600, 600);
-            img0.src = "1.png";
+            img0.src = img_src;
             var c = document.getElementById("c0");
             c.width = c.width;
             c.style.cursor = "pointer";
@@ -229,7 +232,7 @@
             }
             if (count >= 9) {
                 var img0 = new Image(600, 600);
-                img0.src = "1.png";
+                img0.src = img_src;
                 var c = document.getElementById("c0");
                 c.width = c.width;
                 var ctx = c.getContext("2d");
