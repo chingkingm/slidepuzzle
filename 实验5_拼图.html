@@ -1,7 +1,7 @@
 <!--
  * @Author: chingkingm
  * @Date: 2020-05-07 09:17:08
- * @LastEditTime: 2020-05-13 18:12:11
+ * @LastEditTime: 2020-05-30 11:51:24
  * @FilePath: \多媒体教育与娱乐f:\Lessens\2020春网课\移动互联网应用开发 实验\实验5\拼图\实验5_拼图.html
  * @Description: 
  -->
@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML5画布综合项目之拼图游戏</title>
+    <title>拼图游戏</title>
     <style type="text/css">
         #div_c {
             position: absolute;
@@ -25,8 +25,16 @@
         #div_time {
             position: absolute;
             padding-bottom: 10px;
-            left: 220px;
+            left: 60px;
             font-size: 2em;
+        }
+
+        #score_best{
+            display: inline-block;
+            position: relative;
+            left: 180px;
+            color: firebrick;
+            font-size: smaller;
         }
 
         .clc {
@@ -89,12 +97,17 @@
 
 <body onload="pintu()">
     <div id="div0">
-        <h1>HTML5画布综合项目之拼图游戏</h1>
+        <h1>拼图游戏</h1>
         <hr>
         <div id="div_time">
             <div id="s1" class="clc">00</div>
             <div id="s" class="clc">:</div>
             <div id="s2" class="clc">00</div>
+            <span id="score_best">
+                最快成绩：
+                <span id="best_s" class="best">无</span>
+                <!-- 排行榜 -->
+            </span>
         </div>
         <div id="div_c">
             <canvas id="c0" width="600px" height="600px" onmousedown="switchImg(event)"></canvas>
@@ -104,7 +117,7 @@
             <button id="changeImg" onclick="changeImg()">随机换图</button>
             <input type="file" name="select_img" id="select_img" accept="image/jpeg,image/png" onchange="up()">
             <label for="select_img" id="label_img">
-                    点击使用本地图片
+                    使用本地图片
                        600*600
             </label>
         </div>
@@ -116,6 +129,7 @@
         var num_s = [00, 01, 02, 10, 11, 12, 20, 21, 22];
         var flag_merge = 0;//标记随机序列是否为偶序列
         var whitei = 0;
+        var img_src0 = 0;
         var x = [3, 202, 401];
         var y = [3, 202, 401];
         var begin = 0;//标记游戏开始
@@ -126,7 +140,8 @@
             t = setInterval(clock, 50);
             num = randNum(num_s);
             if(server){
-                img_src = Math.floor(Math.random() * 4 + 1);
+                img_src = Math.floor(Math.random() * 11 + 1);
+                img_src0 = img_src;
                 console.log("图片序号" + img_src);
                 img_src = "https://www.chingkingm.cn/wp-content/uploads/2020/05/" + img_src + ".png";
             }
@@ -134,6 +149,7 @@
             var s2 = document.getElementById("s2");
             s1.innerHTML = "00";
             s2.innerHTML = "00";
+            bestScore(sec + min*60);
             drawimg();
         }
         function up(){
@@ -181,6 +197,30 @@
             var s2 = document.getElementById("s2");
             s1.innerHTML = plusZero(min);
             s2.innerHTML = plusZero(sec);
+            
+        }
+        function bestScore(score_cu){
+            /*记录纪录，并显示在游戏右上角*/
+            /*分图片记录，当游戏成功时调用，比较当前游戏时间与存储的记录，若小则改*/
+            /*如果成功取出记录则更新默认的无*/
+            let scoreName = "score" + img_src0;
+            let score_h = Infinity;
+            const span_score = document.getElementById("best_s");
+            if(score_h = localStorage.getItem(scoreName)){
+                span_score.textContent = score_h + "秒";
+            }
+            else{
+                score_h = Infinity;
+                span_score.textContent = "无";
+            }
+            console.log(score_cu+","+score_h);
+            if(score_cu != 0 && (score_cu < score_h)){
+                score_h = score_cu;
+                console.log(score_cu + "," + score_h);
+                span_score.textContent = score_h + "秒";
+                localStorage.setItem(scoreName, score_h);
+                console.log(localStorage.getItem(scoreName));
+            }
         }
         function plusZero(z) {
             if (z < 10) {
@@ -219,7 +259,7 @@
             let xcj = judgeNo(xc);
             let ycj = judgeNo(yc);
             cl = xcj + ycj * 3;
-            console.log(cl+"(" + xc + "," + yc + ")");
+            // console.log(cl+"(" + xc + "," + yc + ")");
             if (isNear(whitei, cl)) {
                 var c0 = document.getElementById("c0");
                 var ctx = c0.getContext("2d");
@@ -306,13 +346,14 @@
                     ctx.fillText("游戏成功", 100, 300);
                     begin = 0;
                     clearInterval(t);
-                    c.style.cursor = "default";
-                    c.style.pointerEvents = "none";
+                    let best = sec + min * 60;
+                    bestScore(best);
+                    // c.style.cursor = "default";
+                    // c.style.pointerEvents = "none";
                 }
             }
         }
         function reStart() {
-            // location.reload(true);
             server = 0;
             clearInterval(t);
             begin = 0;
