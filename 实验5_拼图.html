@@ -1,7 +1,7 @@
 <!--
  * @Author: chingkingm
  * @Date: 2020-05-07 09:17:08
- * @LastEditTime: 2020-05-30 11:51:24
+ * @LastEditTime: 2020-05-30 14:15:23
  * @FilePath: \多媒体教育与娱乐f:\Lessens\2020春网课\移动互联网应用开发 实验\实验5\拼图\实验5_拼图.html
  * @Description: 
  -->
@@ -153,6 +153,7 @@
             drawimg();
         }
         function up(){
+            /*使用本地图片*/
             server = 0;
             let f = document.getElementById("select_img").files[0];
             console.log(f);
@@ -167,6 +168,7 @@
             }
         }
         function changeImg(){
+            /*换图*/
             server = 1;
             clearInterval(t);
             begin = 0;
@@ -213,10 +215,8 @@
                 score_h = Infinity;
                 span_score.textContent = "无";
             }
-            console.log(score_cu+","+score_h);
             if(score_cu != 0 && (score_cu < score_h)){
                 score_h = score_cu;
-                console.log(score_cu + "," + score_h);
                 span_score.textContent = score_h + "秒";
                 localStorage.setItem(scoreName, score_h);
                 console.log(localStorage.getItem(scoreName));
@@ -259,7 +259,6 @@
             let xcj = judgeNo(xc);
             let ycj = judgeNo(yc);
             cl = xcj + ycj * 3;
-            // console.log(cl+"(" + xc + "," + yc + ")");
             if (isNear(whitei, cl)) {
                 var c0 = document.getElementById("c0");
                 var ctx = c0.getContext("2d");
@@ -305,7 +304,7 @@
                 numr[r1] = numr[r2];
                 numr[r2] = temp;
             }
-            if (!mergeSort(numr)) {
+            if (mergeSort(numr) == 0) {
                 numr = randNum(numr);
                 return numr;
             }
@@ -313,14 +312,18 @@
         }
         function mergeSort(arr) {
             let nixu = 0;
+            let position_white = 0;
             for (var i = 0; i < arr.length; i++) {
                 for (var j = i + 1; j < arr.length; j++) {
                     if (arr[i] > arr[j]) {
                         nixu++;
                     }
+                    if(arr[i] == 20){
+                        position_white = i;
+                    }
                 }
             }
-            if (nixu % 2 == 0) {
+            if ((nixu % 2) == (position_white % 2)) {
                 flag_merge = 1;
             }
             return flag_merge;
@@ -348,8 +351,6 @@
                     clearInterval(t);
                     let best = sec + min * 60;
                     bestScore(best);
-                    // c.style.cursor = "default";
-                    // c.style.pointerEvents = "none";
                 }
             }
         }
