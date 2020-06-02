@@ -1,7 +1,7 @@
 <!--
  * @Author: chingkingm
  * @Date: 2020-05-07 09:17:08
- * @LastEditTime: 2020-06-02 07:53:46
+ * @LastEditTime: 2020-06-02 14:41:35
  * @FilePath: \多媒体教育与娱乐f:\Lessens\2020春网课\移动互联网应用开发 实验\实验5\拼图\实验5_拼图.html
  * @Description: 
  -->
@@ -344,9 +344,12 @@
                 var ctx = c.getContext("2d");
                 img0.onload = function () {
                     ctx.drawImage(img0, 0, 0);
-                    ctx.fillStyle = "red";
-                    ctx.font = ("bold 40px sans-serif");
-                    ctx.fillText("游戏成功", 100, 300);
+                    ctx.fillStyle = "rgb(255,205,1)";
+                    ctx.fillRect(0, 270, 600, 60);
+                    ctx.fillStyle = "rgb(0,44,90)";
+                    ctx.font = ("bold 40px consolas");
+                    ctx.textAlign = "center";
+                    ctx.fillText("Course Clear", 300, 315);
                     begin = 0;
                     clearInterval(t);
                     let best = sec + min * 60;
