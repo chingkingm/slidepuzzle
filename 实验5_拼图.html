@@ -1,7 +1,7 @@
 <!--
  * @Author: chingkingm
  * @Date: 2020-05-07 09:17:08
- * @LastEditTime: 2020-06-02 17:19:50
+ * @LastEditTime: 2020-06-03 16:19:18
  * @FilePath: \多媒体教育与娱乐f:\Lessens\2020春网课\移动互联网应用开发 实验\实验5\拼图\实验5_拼图.html
  * @Description: 
  -->
@@ -123,8 +123,8 @@
 <body onload="pintu()">
     <div id="div0">
         <h1>拼图游戏
-            <span id="changesize3" class="changesize" v-if="condition" onclick="changeSize()" title="切换拼图尺寸">3×3</span>
-            <span id="changesize4" class="changesize" v-if="condition" onclick="changeSize()" title="切换拼图尺寸">4×4</span>
+            <span id="changesize3" class="changesize" v-if="condition" onclick="changeSize()" title="切换拼图尺寸">4×4</span>
+            <span id="changesize4" class="changesize" v-if="condition" onclick="changeSize()" title="切换拼图尺寸">3×3</span>
         </h1>
         <hr>
         <div id="div_time">
@@ -149,6 +149,11 @@
                 600*600
             </label>
         </div>
+        <audio id="audio0">
+            <source src="Course Clear.mp3">
+            <source src="Course Clear.wav">
+            您的浏览器太low了,不支持播放
+        </audio>
     </div>
 
     <script>
@@ -164,7 +169,7 @@
         var x3 = [3, 202, 401];
         var x4 = [0, 151, 302, 453];
         var x_y = [x3, x4];
-        var block = 1;//拼图规格
+        var block = 0;//拼图规格
         var whiteBlock = [20, 33];
         var blockNum = [3, 4];
         blockNum = blockNum[block];
@@ -432,6 +437,8 @@
                 var c = document.getElementById("c0");
                 c.width = c.width;
                 var ctx = c.getContext("2d");
+                const a0 = document.getElementById('audio0');
+                a0.play();
                 img0.onload = function () {
                     ctx.drawImage(img0, 0, 0);
                     ctx.fillStyle = "rgb(255,205,1)";
